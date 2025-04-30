@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import ValeursList from './components/ValeursList';
-import axios from 'axios'; // <<< ADD THIS
+import axios from 'axios';
+import "./../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   const [num1, setNum1] = useState('');
@@ -20,39 +21,38 @@ const App = () => {
 
     if (allValid) {
       const avg = (n1 + n2 + n3 + n4) / 4;
-      setAverage(avg.toFixed(2).replace('.', ',')); // Optional: show with comma
+      setAverage(avg.toFixed(2).replace('.', ','));
     } else {
       setAverage(null);
     }
   }, [num1, num2, num3, num4]);
 
-  // <<< ADD THIS FUNCTION
- // <- make sure axios is installed
+  const handleSave = async () => {
+    try {
+      const response = await axios.post('http://192.168.x.x8000/api/valeurs', {
+        valeur1: parseFloat(num1.replace(',', '.')),
+        valeur2: parseFloat(num2.replace(',', '.')),
+        valeur3: parseFloat(num3.replace(',', '.')),
+        valeur4: parseFloat(num4.replace(',', '.')),
+        moyenne: parseFloat(average.replace(',', '.')),
+      });
+      console.log('Saved successfully:', response.data);
+      alert('Valeurs enregistrées avec succès !');
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement:', error.response?.data || error.message);
+      alert('Erreur: ' + (error.response?.data?.message || error.message));
+    }
 
-// inside your App component:
-
-const handleSave = async () => {
-  try {
-    const response = await axios.post('http://127.0.0.1:8000/api/valeurs', {
-      valeur1: parseFloat(num1.replace(',', '.')),
-      valeur2: parseFloat(num2.replace(',', '.')),
-      valeur3: parseFloat(num3.replace(',', '.')),
-      valeur4: parseFloat(num4.replace(',', '.')),
-      moyenne: parseFloat(average.replace(',', '.')),
-    });
-    console.log('Saved successfully:', response.data);
-    alert('Valeurs enregistrées avec succès !');
-  } catch (error) {
-    console.error('Erreur lors de l\'enregistrement:', error.response?.data || error.message);
-    alert('Erreur: ' + (error.response?.data?.message || error.message));
-  }
-    // Clear inputs if you want
     setNum1('');
     setNum2('');
     setNum3('');
     setNum4('');
     setAverage(null);
-};
+  };
+
+  const handleRefresh = () => {
+    window.location.reload();
+  };
 
   return (
     <Router>
@@ -93,14 +93,29 @@ const handleSave = async () => {
           </p>
         )}
 
-        <button onClick={handleSave} style={{ marginTop: '20px' }}>
+        <button
+          className="btn btn-danger btn-custom"
+          onClick={handleSave}
+          style={buttonStyle}
+        >
           Enregistrer
         </button>
 
+        <button
+          className="btn btn-secondary btn-custom"
+          onClick={handleRefresh}
+          style={buttonStyle}
+        >
+          Refresh
+        </button>
+
+        <Link to="/valeurs" className="btn btn-primary btn-custom" style={{ ...buttonStyle, width: '100%' }}>
+          Voir les valeurs enregistrées
+        </Link>
       </div>
 
       <Routes>
-        <Route path="/" element={<ValeursList />} />
+        <Route path="/valeurs" element={<ValeursList />} />
       </Routes>
     </Router>
   );
@@ -117,7 +132,7 @@ const buttonStyle = {
   marginTop: '20px',
   padding: '10px 20px',
   fontSize: '16px',
-  cursor: 'pointer'
+  cursor: 'pointer',
 };
 
 export default App;

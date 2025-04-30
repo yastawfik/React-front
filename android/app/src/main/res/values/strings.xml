@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NumberAvgApp</string>
+    <string name="title_activity_main">NumberAvgApp</string>
+    <string name="package_name">com.example.numberavgapp</string>
+    <string name="custom_url_scheme">com.example.numberavgapp</string>
+</resources>

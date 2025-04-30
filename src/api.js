@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://127.0.0.1:8000/api/valeurs'; // Replace with your actual IP
+const API_BASE_URL = 'http://127.0.0.1:8000/api/valeurs'; //Laravel API URL
 
 export const valeurSaisieService = {
   getAllValeurs: async () => {
