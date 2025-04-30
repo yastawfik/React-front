@@ -10,7 +10,7 @@ const ListValeurs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_URL = 'http://192.168.x.x:8000/api';
+  const API_URL = 'http://192.168.105.108:8000/api';
 
   useEffect(() => {
     const fetchValeurs = async () => {

@@ -29,7 +29,7 @@ const App = () => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.post('http://192.168.x.x8000/api/valeurs', {
+      const response = await axios.post('http://192.168.105.108:8000/api/valeurs', {
         valeur1: parseFloat(num1.replace(',', '.')),
         valeur2: parseFloat(num2.replace(',', '.')),
         valeur3: parseFloat(num3.replace(',', '.')),
